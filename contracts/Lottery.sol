@@ -22,4 +22,9 @@ contract Lottery {
         players[index].transfer(this.balance);
         players = new address[](0);
     }
+
+    modifier restricted() {
+        require(msg.sender == manager);
+        _;
+    }
 }
