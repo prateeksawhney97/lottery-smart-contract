@@ -1,0 +1,25 @@
+{
+  "name": "lottery",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --watchAll",
+    "deploy": "node ./deploy.js"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "keywords": [],
+  "author": "Max Li <ml@maxlivinci.com> (https://maxlivinci.com/)",
+  "license": "MIT",
+  "dependencies": {
+    "ganache-cli": "^6.1.2",
+    "solc": "^0.4.24",
+    "truffle-hdwallet-provider": "0.0.5",
+    "web3": "^1.0.0-beta.26"
+  },
+  "devDependencies": {
+    "jest": "^23.1.0"
+  }
+}
