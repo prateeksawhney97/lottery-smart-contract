@@ -11,8 +11,26 @@ describe('Lottery', () => {
 
   beforeEach(async () => {
     accounts = await web3.eth.getAccounts();
-    inbox = await new web3.eth.Contract(JSON.parse(abi))
+    lottery = await new web3.eth.Contract(JSON.parse(abi))
     .deploy({ data: bytecode })
     .send({ from: accounts[0], gas: '1000000' });
+  });
+
+  it('deploys a contract', () => {
+    expect(lottery.options.address).toBeTruthy()
+  });
+
+  it('allows one account to enter', async () => {
+    await lottery.methods.enter().send({
+      from: accounts[0],
+      value: web3.utils.toWei('0.02', 'ether')
+    });
+
+    const players = await lottery.methods.getPlayers().call({
+      from: accounts[0]
+    });
+
+    expect(accounts[0]).toEqual(players[0])
+    expect(1).toEqual(players.length)
   });
 });
