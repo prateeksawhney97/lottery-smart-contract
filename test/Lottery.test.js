@@ -60,4 +60,13 @@ describe('Lottery', () => {
     expect(accounts[2]).toEqual(players[2])
     expect(3).toEqual(players.length)
   });
+
+  it('requires a minimum amount of ether to enter', () => {
+    expect(async () => {
+      await lottery.methods.enter().send({
+        from: accounts[0],
+        value: 0
+      });
+    }).toThrow();
+  });
 });
