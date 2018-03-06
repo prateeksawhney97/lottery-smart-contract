@@ -61,12 +61,24 @@ describe('Lottery', () => {
     expect(3).toEqual(players.length)
   });
 
-  it('requires a minimum amount of ether to enter', () => {
-    expect(async () => {
+  it('requires a minimum amount of ether to enter', async () => {
+    try {
       await lottery.methods.enter().send({
         from: accounts[0],
         value: 0
       });
-    }).toThrow();
+    } catch (err) {
+      expect(err).toBeDefined();
+    }
+  });
+
+  it('only manager can call pickWinner', async () => {
+    try {
+      await lottery.methods.pickWinner().send({
+        from: accounts[1]
+      });
+    } catch (err) {
+      expect(err).toBeDefined();
+    }
   });
 });
