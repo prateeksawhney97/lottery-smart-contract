@@ -95,4 +95,25 @@ describe('Lottery', () => {
 
     expect(difference > web3.utils.toWei('1.8', 'ether')).toBeTruthy();
   });
+  
+  it('lottery resets after execution of pickWinner function', async ()=> {
+    await lottery.methods.enter().send({
+      from: accounts[0], value: web3.utils.toWei('2', 'ether')
+    });
+    const players = await lottery.methods.getPlayers().call({from: accounts[0]});
+    await lottery.methods.pickWinner().send({from: accounts[0]});
+
+    assert(players.length, undefined );
+  });
+
+  it('lottery has a balance of zero after one round', async ()=> {
+    await lottery.methods.enter().send({
+      from: accounts[0], value: web3.utils.toWei('2', 'ether')
+    });
+    const players = await lottery.methods.getPlayers().call({from: accounts[0]});
+    await lottery.methods.pickWinner().send({from: accounts[0]});
+    const Balance = await web3.eth.getBalance(players[0]);
+    assert(Balance, 0);
+  });
+  
 });
