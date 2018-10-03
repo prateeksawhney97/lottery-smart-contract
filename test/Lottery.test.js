@@ -8,6 +8,11 @@ const { interface: abi, bytecode } = require('../comple.js');
 describe('Lottery', () => {
   let lottery;
   let accounts;
+  
+const _pickWinner = async () => {
+  console.log('called');
+  await lottery.methods.pickWinner().send({ from: accounts[0]});
+}
 
   beforeEach(async () => {
     accounts = await web3.eth.getAccounts();
