@@ -96,24 +96,24 @@ describe('Lottery', () => {
     expect(difference > web3.utils.toWei('1.8', 'ether')).toBeTruthy();
   });
   
-  it('lottery resets after execution of pickWinner function', async ()=> {
-    await lottery.methods.enter().send({
-      from: accounts[0], value: web3.utils.toWei('2', 'ether')
-    });
-    const players = await lottery.methods.getPlayers().call({from: accounts[0]});
-    await lottery.methods.pickWinner().send({from: accounts[0]});
+  
+  it('resets players after execution of pickWinner function', async () => {
+    await _pickWinner();
 
-    assert(players.length, undefined );
+    const players = await lottery.methods.getPlayers().call({
+      from: accounts[0]
+    });
+
+    assert.equal(0, players.length);
   });
 
-  it('lottery has a balance of zero after one round', async ()=> {
-    await lottery.methods.enter().send({
-      from: accounts[0], value: web3.utils.toWei('2', 'ether')
-    });
-    const players = await lottery.methods.getPlayers().call({from: accounts[0]});
-    await lottery.methods.pickWinner().send({from: accounts[0]});
-    const Balance = await web3.eth.getBalance(players[0]);
-    assert(Balance, 0);
+  it('contract has no balance left out after sending money to the winner', async () => {
+    await _pickWinner();
+    const contractBalance = await web3.eth.getBalance(lottery.options.address);
+
+    assert.equal(0, contractBalance);
   });
+  
+ 
   
 });
